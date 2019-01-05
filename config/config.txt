@@ -1,0 +1,11 @@
+
+# enable camera
+start_x=1             # essential
+gpu_mem=128           # at least, or maybe more if you wish
+disable_camera_led=1  # optional, if you don't want the led to glow
+
+# enable w1 overlay for DS18B20
+dtoverlay=w1-gpio,gpiopin=4
+dtoverlay=w1-gpio,gpiopin=22
+dtoverlay=w1-gpio,gpiopin=23
+dtoverlay=w1-gpio,gpiopin=24

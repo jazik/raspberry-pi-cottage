@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SENSORS_PATH=/opt/measurements/sensors.d
+
+for sensor in `ls -1 $SENSORS_PATH/.`
+do
+    temp=`$SENSORS_PATH/$sensor` 
+    date=`date` 
+    echo "$date ---- $temp" >> /var/log/measurement-$sensor
+done

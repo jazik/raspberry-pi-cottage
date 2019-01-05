@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/opt/measurements/read-am2302.py 23

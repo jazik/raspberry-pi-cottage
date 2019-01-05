@@ -1,0 +1,7 @@
+tunnels:
+  ssh:
+    proto: tcp
+    addr: 22
+  camera:
+    proto: tcp
+    addr: 5000

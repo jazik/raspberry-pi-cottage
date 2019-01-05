@@ -1,0 +1,14 @@
+#!/bin/bash
+
+GPIO=5
+
+if [ "$#" -ne 1 ]
+then
+    echo "Usage: $0 <on/off>"
+    echo "Example: $0 on"
+    exit 1
+fi
+
+action=$1
+
+/opt/heating/gpio-set.py $GPIO $action
