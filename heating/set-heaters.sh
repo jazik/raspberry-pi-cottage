@@ -14,9 +14,14 @@ action=$1
 date=`date` 
 for heater in `ls -1 $HEATERS_PATH/.`
 do
-    if [ "$action" != "disabled" -a "$action" != "always-on" ]
-    then
-        $HEATERS_PATH/$heater $action
+    do_action=$action
+    if [ -f /opt/heating/$heater-disabled ]; then
+        do_action="disabled"
     fi
-    echo "$date ---- $heater $action" >> /var/log/heating
+
+    if [ "$do_action" != "disabled" -a "$do_action" != "always-on" ]
+    then
+        $HEATERS_PATH/$heater $do_action
+    fi
+    echo "$date ---- $heater $do_action" >> /var/log/heating
 done
