@@ -4,8 +4,8 @@ SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 # m h dom mon dow user	command
-0  0	* * *	root    cd /opt/heating && ./heaton_and_log.sh
-0  6	* * *	root    cd /opt/heating && ./heatoff_and_log.sh
-0  13	* * *	root    cd /opt/heating && ./heaton_and_log.sh
-0  15	* * *	root    cd /opt/heating && ./heatoff_and_log.sh
+0  23	* * *	root    cd /opt/heating && ./heaton_and_log.sh
+0  5	* * *	root    cd /opt/heating && ./heatoff_and_log.sh
+0  12	* * *	root    cd /opt/heating && ./heaton_and_log.sh
+0  14	* * *	root    cd /opt/heating && ./heatoff_and_log.sh
 #
