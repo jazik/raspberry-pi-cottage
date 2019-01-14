@@ -10,6 +10,9 @@ temperature sensors either AM2302 or DS18B20 to take periodic measurements
 and store those to a file. Or you can control outputs to switch on/off
 electrical heating.
 
+When camera captures are enabled they can be optionally uploaded to
+Google Photos.
+
 Note that this is for Linux host only. It won't work on Windows or MacOS
 or any other host.
 
@@ -21,6 +24,22 @@ to start with [examples](examples).
 
 Make sure you keep your private personal data secure, don't store those
 in Github or any public cloud.
+
+## Camera capture upload to Google Photos
+
+The scripts are using [gpup](https://github.com/int128/gpup) Go application
+to upload images to Google Photos using API. It requires to OAuth authentication.
+Follow the instructions along with `gpup`.
+
+If you don't have web browser installed on Raspberry then get the token
+in your desktop machine and then update the [.gpupconfig](examples/custom/.gpupconfig)
+accordingly.
+
+In [/opt/camera/camera-capture-upload-album](camera/camera-capture-upload-album)
+uncomment the `ALBUM_TITLE` and set the string to Google Photos album to which
+the images should be uploaded.
+
+Once image capturing is enabled the image will be also automatically uploaded.
 
 # Creating SD card for Raspberry Pi
 

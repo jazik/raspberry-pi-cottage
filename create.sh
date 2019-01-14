@@ -80,6 +80,7 @@ sudo sh -c "cat $CUSTOM_DIR/wifi/$WIFI/wpa_supplicant.conf >> mnt/etc/wpa_suppli
 
 sudo sh -c 'cp -rT target mnt/home/pi'
 sudo sh -c "cp -p $CUSTOM_DIR/keys/* mnt/home/pi/.ssh/."
+sudo sh -c "cp -p $CUSTOM_DIR/.gpupconfig mnt/home/pi/."
 sudo sh -c 'chown -R 1000:1000 mnt/home/pi'
 sudo sh -c 'cp -r heating mnt/opt/.'
 sudo sh -c 'cp -r measurements mnt/opt/.'
