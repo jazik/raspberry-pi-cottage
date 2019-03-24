@@ -3,6 +3,13 @@
 sudo apt-get -y update
 sudo apt-get -y install gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-libav
 
+# If we are running Desktop then install touch screen keyboard
+# in case physical keyboard is not attached.
+TARGET=`systemctl get-default`
+if [ "$TARGET" = "graphical.target" ]; then
+    sudo apt-get -y install matchbox-keyboard
+fi
+
 sudo apt-get -y install python-pip
 sudo python -m pip install --upgrade pip setuptools wheel
 sudo pip install Adafruit_DHT

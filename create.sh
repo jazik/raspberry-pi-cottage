@@ -1,22 +1,32 @@
 #!/bin/bash
 
-if [ "$#" -ne 3 ]
+if [ "$#" -lt 3 ]
 then
-    echo "Usage: $0 <sd card device> <custom dir> <wifi>"
+    echo "Usage: $0 [-g] <sd card device> <custom dir> <wifi>"
+    echo "    -g....install desktop version of raspbian"
     echo "Example: $0 /dev/sdb examples/custom mywifi"
     exit 1
+fi
+
+if [ "$1" = "-g" ]; then
+    VARIANT=""
+    shift
+else
+    VARIANT="_lite"
 fi
 
 SD_DEV=$1
 CUSTOM_DIR=$2
 WIFI=$3
 
+IMAGE=raspbian${VARIANT}_latest
+
 mkdir -p download
 cd download
 rm -f *.img
-rm -f raspbian_lite_latest.sha1.new
-curl -JL https://downloads.raspberrypi.org/raspbian_lite_latest.sha1 -o raspbian_lite_latest.sha1.new
-cmp -s raspbian_lite_latest.sha1.new raspbian_lite_latest.sha1
+rm -f $IMAGE.sha1.new
+curl -JL https://downloads.raspberrypi.org/$IMAGE.sha1 -o $IMAGE.sha1.new
+cmp -s $IMAGE.sha1.new $IMAGE.sha1
 if [ $? -ne 0 ] 
 then
     echo "New version of Raspbian exist."
@@ -26,24 +36,24 @@ then
     then
         rm -f *.zip.old
         rename zip zip.old *.zip || true
-        mv raspbian_lite_latest.sha1 raspbian_lite_latest.sha1.old || true
-        curl -JLO https://downloads.raspberrypi.org/raspbian_lite_latest
-        sha1sum --quiet --check raspbian_lite_latest.sha1.new
+        mv $IMAGE.sha1 $IMAGE.sha1.old || true
+        curl -JLO https://downloads.raspberrypi.org/$IMAGE
+        sha1sum --quiet --check $IMAGE.sha1.new
         if [ $? -ne 0 ]
         then
             echo "Checksum failed exiting ..."
             rename zip.old zip *.zip || true
-            mv raspbian_lite_latest.sha1.old raspbian_lite_latest.sha1 || true
+            mv $IMAGE.sha1.old $IMAGE.sha1 || true
             exit 1
         fi
-        mv raspbian_lite_latest.sha1.new raspbian_lite_latest.sha1
+        mv $IMAGE.sha1.new $IMAGE.sha1
     else
         echo "Not downloading latest version of Raspbian."
     fi
 else
     echo "Already have latest version of Raspbian."
 fi
-rm -f raspbian_lite_latest.sha1.new
+rm -f $IMAGE.sha1.new
 
 rm -f ngrok-stable-linux-arm.zip
 curl -JLO https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.zip
