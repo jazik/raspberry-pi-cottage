@@ -9,3 +9,6 @@ dtoverlay=w1-gpio,gpiopin=4
 dtoverlay=w1-gpio,gpiopin=22
 dtoverlay=w1-gpio,gpiopin=23
 dtoverlay=w1-gpio,gpiopin=24
+
+# rotate screen 180 degrees
+lcd_rotate=2
