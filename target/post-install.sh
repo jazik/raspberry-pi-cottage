@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt-get -y update
+sudo apt-get -y update --allow-releaseinfo-change
 sudo apt-get -y install gstreamer1.0-tools gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-libav
 
 # If we are running Desktop then install touch screen keyboard
