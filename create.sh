@@ -94,8 +94,13 @@ sudo sh -c "cp -p $CUSTOM_DIR/.gpupconfig mnt/home/pi/."
 sudo sh -c 'chown -R 1000:1000 mnt/home/pi'
 sudo sh -c 'cp -r heating mnt/opt/.'
 sudo sh -c 'cp -r measurements mnt/opt/.'
+sudo sh -c 'cp measurements/measurements.service mnt/etc/systemd/system/'
 sudo sh -c 'cp -r camera mnt/opt/.'
 sudo sh -c 'cp camera/camera.service mnt/etc/systemd/system/'
+sudo sh -c 'cp -r www mnt/var/.'
+
+wget https://cdn.plot.ly/plotly-latest.min.js
+sudo sh -c 'mv plotly-latest.min.js mnt/var/www/html/.'
 
 sudo sh -c 'mkdir mnt/opt/ngrok'
 sudo sh -c 'cp ngrok/*.sh mnt/opt/ngrok/.'

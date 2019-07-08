@@ -1,0 +1,12 @@
+[Unit]
+Description=measurement
+After=network.target
+
+[Service]
+ExecStart=/opt/measurements/read-am2302.py 22 -c -l 60 -t /var/www/html/loop_time.conf -f /var/www/html/data.csv
+KillMode=control-group
+Restart=on-failure
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

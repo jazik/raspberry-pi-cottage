@@ -1,0 +1,205 @@
+<head>
+	<script src="plotly-latest.min.js"></script>
+</head>
+
+<body>
+
+    <p><div id="status"></div></p>
+
+    <p>
+	<table>
+            <tr>
+                <td valign="top">
+	        <button onclick="toggle_refresh()" id="toggle_refresh_button">Obnovuj kazdych 5 sekund</button>
+	        </td>
+                <td>
+	        <form method="get" id="download">
+		    <button type="submit">Stahnout datovy soubor</button>
+	        </form>
+	        </td>
+            </tr>
+	</table>
+    </p>
+
+    <div id="myDiv" style="width:1200px;height:600px;"></div>
+
+    <script>
+
+var refresh = 0;
+var interval;
+var curr_teplota = 0;
+var curr_vlhkost = 0;
+var curr_date = '';
+
+function toggle_refresh() {
+    if (refresh == 0) {
+        refresh = 5000;
+        interval = setInterval(draw, refresh);
+        document.getElementById("toggle_refresh_button").innerHTML = "Zastav automaticke obnovovani"
+    } else {
+        refresh = 0;
+        clearInterval(interval);
+        document.getElementById("toggle_refresh_button").innerHTML = "Obnovuj kazdych 5 sekund"
+    }
+}
+
+// Synchronously read a text file from the web server with Ajax
+//
+// The filePath is relative to the web page folder.
+// Example:   myStuff = loadFile("Chuuk_data.txt");
+//
+// You can also pass a full URL, like http://sealevel.info/Chuuk1_data.json, but there
+// might be Access-Control-Allow-Origin issues. I found it works okay in Firefox, Edge,
+// or Opera, and works in IE 11 if the server is configured properly, but in Chrome it only
+// works if the domains exactly match (and note that "xyz.com" & "www.xyz.com" don't match).
+// Otherwise Chrome reports an error:
+//
+//   No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://sealevel.info' is therefore not allowed access.
+//
+// That happens even when "Access-Control-Allow-Origin *" is configured in .htaccess,
+// and even though I verified the headers returned (you can use a header-checker site like
+// http://www.webconfs.com/http-header-check.php to check it). I think it's a Chrome bug.
+function loadFile(filePath) {
+    var result = null;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET", filePath, false);
+    xmlhttp.send();
+    if (xmlhttp.status==200) {
+        result = "datum,teplota,vlhkost\n" + xmlhttp.responseText;
+    }
+    console.log(result)
+    return result;
+}
+
+function makeplot(url) {
+    Plotly.d3.csv(url, function(data){ processData(data) } );
+};
+
+function processData(allRows) {
+
+    // console.log(allRows);
+    var datum = [], teplota = [], vlhkost = [];
+
+    for (var i=0; i<allRows.length; i++) {
+        row = allRows[i];
+        datum.push( row['datum'] );
+        teplota.push( row['teplota'] );
+        vlhkost.push( row['vlhkost'] );
+    }
+
+    curr_datum = allRows[allRows.length-1]['datum'];
+    curr_datum = curr_datum.fontsize("5");
+    curr_teplota = allRows[allRows.length-1]['teplota'] + " &#8451";
+    curr_teplota = curr_teplota.fontcolor("blue");
+    curr_teplota = curr_teplota.fontsize("7");
+    curr_vlhkost = allRows[allRows.length-1]['vlhkost'] + " %";
+    curr_vlhkost = curr_vlhkost.fontcolor("green");
+    curr_vlhkost = curr_vlhkost.fontsize("7");
+    document.getElementById("status").innerHTML = curr_datum + "&nbsp&nbsp&nbsp&nbsp" + curr_teplota + "&nbsp&nbsp&nbsp&nbsp" + curr_vlhkost;
+
+    // console.log( 'Datum',datum, 'Teplota',teplota, 'Vlhkost', vlhkost );
+    makePlotly( datum, teplota, vlhkost );
+}
+
+function makePlotly( datum, teplota, vlhkost ){
+    var plotDiv = document.getElementById("plot");
+
+    var trace_teplota = {
+        x: datum,
+        y: teplota,
+        name: 'Teplota',
+        type: 'scatter'
+    };
+
+    var trace_vlhkost = {
+        x: datum,
+        y: vlhkost,
+        name: 'Vlhkost',
+        yaxis: 'y2',
+        type: 'scatter'
+    };
+
+    var data = [trace_teplota, trace_vlhkost];
+
+
+    var selectorOptions = {
+        buttons: [{
+            step: 'hour',
+            stepmode: 'backward',
+            count: 1,
+            label: '1h'
+        }, {
+            step: 'day',
+            stepmode: 'backward',
+            count: 1,
+            label: '1d'
+        }, {
+            step: 'day',
+            stepmode: 'backward',
+            count: 7,
+            label: '1t'
+        }, {
+            step: 'month',
+            stepmode: 'backward',
+            count: 1,
+            label: '1m'
+        }, {
+            step: 'month',
+            stepmode: 'backward',
+            count: 6,
+            label: '6m'
+        }, {
+            step: 'year',
+            stepmode: 'todate',
+            count: 1,
+            label: 'OZR'
+        }, {
+            step: 'year',
+            stepmode: 'backward',
+            count: 1,
+            label: '1r'
+        }, {
+            step: 'all',
+            label: 'vse'
+        }],
+    };
+
+    var layout = {
+        title: 'Teplota a vlkhost',
+        xaxis: {
+            rangeselector: selectorOptions,
+            rangeslider: {}
+        },
+        yaxis: {
+            title: 'Teplota',
+            fixedrange: true
+        },
+        yaxis2: {
+            title: 'Vlhkost',
+            titlefont: {color: 'rbg(148,103,189)'},
+            tickfont: {color: 'rbg(148,103,189)'},
+            overlaying: 'y',
+            side: 'right',
+            fixedrange: true
+        }
+    };
+
+
+    Plotly.newPlot('myDiv', data, layout);
+};
+var url = document.location.href, shortURL = url.substring(0,url.lastIndexOf("/"));
+var data_url = shortURL + "/data.csv";
+
+console.log(data_url);
+
+function draw() {
+    makeplot(data_url);
+}
+
+document.getElementById("download").action = data_url;
+
+draw();
+
+    </script>
+
+</body>

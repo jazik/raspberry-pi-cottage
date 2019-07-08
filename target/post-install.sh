@@ -33,3 +33,10 @@ rm go$GO_VER.linux-armv6l.tar.gz
 export GOPATH=$HOME/go
 export PATH=/usr/local/go/bin:$PATH:$GOPATH/bin
 go get -v -u github.com/int128/gpup
+
+sudo apt-get -y install lighttpd
+sudo chown -R www-data:www-data /var/www
+sudo sh -c 'cd /etc/lighttpd/conf-enabled; ln -s ../conf-available/10-cgi.conf 10-cgi.conf'
+sudo sed -i -e 's/\s.*cgi.assign.*/\tcgi.assign = ( ".py" => "\/usr\/bin\/python" )/' /etc/lighttpd/conf-enabled/10-cgi.conf
+sudo sed -i -e '/\s.*url.alias/d' /etc/lighttpd/conf-enabled/10-cgi.conf
+sudo systemctl restart lighttpd

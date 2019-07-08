@@ -13,6 +13,11 @@ electrical heating.
 When camera captures are enabled they can be optionally uploaded to
 Google Photos.
 
+Project contains simple WebUI running on top of `lighttpd` and implemented
+in Javascript using [Plotly](https://plot.ly/) to display measured
+temperature and humidity. The data collections must be enabled after
+installation by running `/opt/measurements/measurements-systemd-enable.sh`.
+
 Note that this is for Linux host only. It won't work on Windows or MacOS
 or any other host.
 
