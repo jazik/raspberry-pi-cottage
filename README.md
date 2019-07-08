@@ -18,6 +18,8 @@ in Javascript using [Plotly](https://plot.ly/) to display measured
 temperature and humidity. The data collections must be enabled after
 installation by running `/opt/measurements/measurements-systemd-enable.sh`.
 
+![Example WebUI](../assets/measurements-webapp.png?raw=true)
+
 Note that this is for Linux host only. It won't work on Windows or MacOS
 or any other host.
 
