@@ -89,6 +89,8 @@ sudo sh -c 'mkdir mnt/opt'
 sudo sh -c "cat $CUSTOM_DIR/wifi/$WIFI/wpa_supplicant.conf >> mnt/etc/wpa_supplicant/wpa_supplicant.conf"
 
 sudo sh -c 'cp -rT target mnt/home/pi'
+sudo sh -c 'mkdir -p mnt/home/pi/.ssh/.'
+sudo sh -c 'chmod 700 mnt/home/pi/.ssh/.'
 sudo sh -c "cp -p $CUSTOM_DIR/keys/* mnt/home/pi/.ssh/."
 sudo sh -c "cp -p $CUSTOM_DIR/.gpupconfig mnt/home/pi/."
 sudo sh -c 'chown -R 1000:1000 mnt/home/pi'
