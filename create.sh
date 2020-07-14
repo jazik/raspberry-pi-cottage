@@ -37,7 +37,7 @@ then
         rm -f *.zip.old
         rename zip zip.old *.zip || true
         mv $IMAGE.sha1 $IMAGE.sha1.old || true
-        curl -JLO https://downloads.raspberrypi.org/$IMAGE
+        wget --content-disposition https://downloads.raspberrypi.org/$IMAGE
         sha1sum --quiet --check $IMAGE.sha1.new
         if [ $? -ne 0 ]
         then
