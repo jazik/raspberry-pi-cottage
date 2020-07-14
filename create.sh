@@ -19,7 +19,7 @@ SD_DEV=$1
 CUSTOM_DIR=$2
 WIFI=$3
 
-IMAGE=raspbian${VARIANT}_latest
+IMAGE=raspios${VARIANT}_armhf_latest
 
 mkdir -p download
 cd download

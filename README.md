@@ -63,7 +63,7 @@ cd raspberry-pi-cottage
 ./create.sh /dev/sdb examples/custom mywifi
 ```
 
-This will download latest Raspbian Lite image and modify the configuration
+This will download latest RasPiOS Lite image and modify the configuration
 based on your customization and including helper scripts for controlling
 camera, heaters and temperature measurements.
 
@@ -79,7 +79,7 @@ ssh -i examples/custom/wifi/mywifi/id_rsa pi@192.168.0.2
 sudo reboot
 ```
 
-This will install additional packages on top of Raspbian Lite needed for
+This will install additional packages on top of RasPiOS Lite needed for
 camera use and use of temperature sensors. It will also configure timezone
 and locales. Check the script for details.
 
