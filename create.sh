@@ -116,6 +116,9 @@ sudo sh -c 'sed -i -e "s/.*PasswordAuthentication.*/PasswordAuthentication no/" 
 sudo sh -c 'rm -f mnt/etc/localtime'
 sudo sh -c "cp $CUSTOM_DIR/timezone mnt/etc/timezone"
 
+sudo sh -c 'cp config/rfkill-unblock.service mnt/etc/systemd/system'
+sudo sh -c 'ln -s /etc/systemd/system/rfkill-unblock.service mnt/etc/systemd/system/multi-user.target.wants/rfkill-unblock.service'
+
 sudo sync
 sleep 1
 sudo umount mnt
